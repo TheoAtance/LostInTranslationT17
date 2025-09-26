@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class provides the services of: <br/>
@@ -41,11 +38,20 @@ public class LanguageCodeConverter {
             Iterator<String> iterator = lines.iterator();
             iterator.next(); // skip the first line
             while (iterator.hasNext()) {
-                String line = iterator.next();
-                String language = line.trim().split("\\s+")[0];
-                String code = line.trim().split("\\s+")[1];
+                String line = iterator.next().trim();
+                String[] parts = line.split("\\s+");
+                if (parts.length < 2) continue;
+
+                String code = parts[parts.length - 1];
+                String language = String.join(" ", Arrays.copyOf(parts, parts.length - 1));
+
                 languageToLanguageCode.put(language, code);
                 languageCodeToLanguage.put(code, language);
+//                String line = iterator.next();
+//                String language = line.trim().split("\\s+")[0];
+//                String code = line.trim().split("\\s+")[1];
+//                languageToLanguageCode.put(language, code);
+//                languageCodeToLanguage.put(code, language);
             }
 
         } catch (IOException | URISyntaxException ex) {
@@ -78,6 +84,6 @@ public class LanguageCodeConverter {
      * @return how many languages are included in this language code converter.
      */
     public int getNumLanguages() {
-        return languageCodeToLanguage.size()+1;
+        return languageCodeToLanguage.size();
     }
 }
