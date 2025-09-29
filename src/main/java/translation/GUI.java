@@ -29,13 +29,14 @@ public class GUI {
 
 
             // Create Language Code Converter object
-
             LanguageCodeConverter languageConverter = new LanguageCodeConverter();
             CountryCodeConverter countryConverter = new CountryCodeConverter();
 
+            // Initialize selected codes
             selected_country_code = translator.getCountryCodes().get(0);
             selected_language_code = translator.getLanguageCodes().get(0);
 
+            //initialize translation
             translation =  new JLabel("Translation: " + translator.translate(selected_country_code, selected_language_code));
 
 
@@ -43,7 +44,7 @@ public class GUI {
             JComboBox<String> languageComboBox = new JComboBox<>();
             loadComboBox(translator, languageConverter, languageComboBox);
 
-
+            // create JList
             String[] countries = new String[translator.getCountryCodes().size()];
             loadJList(translator, countries, countryConverter);
             JList<String> list = new JList<>(countries);
@@ -51,11 +52,13 @@ public class GUI {
             JScrollPane scrollPane = new JScrollPane(list);
 
 
+            // add components to panel
             languagePanel.add(languageComboBox);
             countryPanel.add(scrollPane);
             translationPanel.add(translation);
 
 
+           // Listeners to collect user input
             languageComboBox.addItemListener(new ItemListener(){
 
                 /**
@@ -97,6 +100,7 @@ public class GUI {
 
 
 
+            //Build main panel by adding smaller panels
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
             mainPanel.add(languagePanel);
